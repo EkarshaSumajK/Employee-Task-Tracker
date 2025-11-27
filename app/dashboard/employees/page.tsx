@@ -88,29 +88,7 @@ export default function EmployeesPage() {
               }
             }}
           />
-          <Select
-            placeholder="Task Status"
-            data={[
-              { value: 'All', label: 'All Tasks' },
-              { value: 'Pending', label: 'Pending' },
-              { value: 'In Progress', label: 'In Progress' },
-              { value: 'Completed', label: 'Completed' },
-            ]}
-            value={filter}
-            onChange={(value) => setFilter(value as TaskStatus | 'All')}
-            w={{ base: '100%', sm: '200px' }}
-            radius="md"
-            size="sm"
-            comboboxProps={{ 
-              middlewares: { flip: true, shift: true, inline: false },
-              onOpen: () => {
-                const scrollY = window.scrollY;
-                requestAnimationFrame(() => {
-                  window.scrollTo({ top: scrollY, behavior: 'instant' });
-                });
-              }
-            }}
-          />
+         
         </Flex>
 
         {filteredEmployees.length === 0 ? (

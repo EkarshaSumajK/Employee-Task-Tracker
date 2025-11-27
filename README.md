@@ -1,4 +1,7 @@
-# Employee Task Tracker
+<div align="center">
+  <img src="app/icon.svg" alt="TaskTracker Logo" width="64" height="64" />
+  <h1>Employee Task Tracker</h1>
+</div>
 
 A modern, responsive web application for tracking employee tasks and managing team productivity. Built with Next.js 16 and Mantine UI, this application provides a comprehensive solution for task management with a beautiful, intuitive interface.
 

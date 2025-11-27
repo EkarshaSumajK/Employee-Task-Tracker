@@ -3,17 +3,20 @@
 import { Container, Title, Text, Group, Avatar, Paper, SimpleGrid, Stack, Badge, Box, Button, Progress, Select } from '@mantine/core';
 import { useTaskTracker } from '@/hooks/useTaskTracker';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, CheckCircle, Clock, TrendingUp, Calendar } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Clock, TrendingUp, Calendar, Plus } from 'lucide-react';
 import { TaskStatus } from '@/types';
 import { TaskList } from '@/components/TaskList';
+import { AddTaskModal } from '@/components/AddTaskModal';
+import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 import { EmptyState } from '@/components/EmptyState';
 
 export default function EmployeeDetailPage() {
   const { id } = useParams();
   const router = useRouter();
-  const { employees, updateTaskStatus, deleteTask } = useTaskTracker();
+  const { employees, addTask, updateTaskStatus, deleteTask } = useTaskTracker();
   const [taskStatusFilter, setTaskStatusFilter] = useState<TaskStatus | 'All'>('All');
+  const [opened, { open, close }] = useDisclosure(false);
   
   const employee = employees.find(e => e.id.toString() === id);
 
@@ -49,6 +52,8 @@ export default function EmployeeDetailPage() {
   const pendingTasks = employee.tasks.filter(t => t.status === 'Pending').length;
   const inProgressTasks = employee.tasks.filter(t => t.status === 'In Progress').length;
   const completionRate = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+
+  const employeeOptions = employees.map(emp => ({ value: emp.id.toString(), label: emp.name }));
 
   return (
     <Container size="xl" py={{ base: 16, sm: 24, md: 40 }} px={{ base: 12, sm: 20 }} className="animate-fade-in">
@@ -132,33 +137,45 @@ export default function EmployeeDetailPage() {
 
       <SimpleGrid cols={{ base: 1, md: 3 }} spacing={{ base: 'md', md: 'lg' }}>
         <Paper p={{ base: 'md', md: 'xl' }} radius="lg" className="glass-card" style={{ gridColumn: 'span 2' }}>
-          <Group justify="space-between" mb={{ base: 'md', md: 'xl' }} align="center">
+          <Group justify="space-between" mb={{ base: 'md', md: 'xl' }} align="center" wrap="wrap" gap="sm">
             <Title order={3} size="h3" style={{ fontSize: 'clamp(1.25rem, 3vw, 1.5rem)' }}>
               Assigned Tasks
             </Title>
-            <Select
-              placeholder="Filter by status"
-              data={[
-                { value: 'All', label: 'All Tasks' },
-                { value: 'Pending', label: 'Pending' },
-                { value: 'In Progress', label: 'In Progress' },
-                { value: 'Completed', label: 'Completed' },
-              ]}
-              value={taskStatusFilter}
-              onChange={(value) => setTaskStatusFilter(value as TaskStatus | 'All')}
-              w={{ base: '100%', sm: '200px' }}
-              size="sm"
-              radius="md"
-              comboboxProps={{ 
-                middlewares: { flip: true, shift: true, inline: false },
-                onOpen: () => {
-                  const scrollY = window.scrollY;
-                  requestAnimationFrame(() => {
-                    window.scrollTo({ top: scrollY, behavior: 'instant' });
-                  });
-                }
-              }}
-            />
+            <Group gap="sm">
+              <Select
+                placeholder="Filter by status"
+                data={[
+                  { value: 'All', label: 'All Tasks' },
+                  { value: 'Pending', label: 'Pending' },
+                  { value: 'In Progress', label: 'In Progress' },
+                  { value: 'Completed', label: 'Completed' },
+                ]}
+                value={taskStatusFilter}
+                onChange={(value) => setTaskStatusFilter(value as TaskStatus | 'All')}
+                w={{ base: '100%', sm: '200px' }}
+                size="sm"
+                radius="md"
+                comboboxProps={{ 
+                  middlewares: { flip: true, shift: true, inline: false },
+                  onOpen: () => {
+                    const scrollY = window.scrollY;
+                    requestAnimationFrame(() => {
+                      window.scrollTo({ top: scrollY, behavior: 'instant' });
+                    });
+                  }
+                }}
+              />
+              <Button
+                leftSection={<Plus size={18} />}
+                onClick={open}
+                size="sm"
+                radius="md"
+                color="indigo"
+                variant="filled"
+              >
+                Add Task
+              </Button>
+            </Group>
           </Group>
           <TaskList 
             tasks={filteredTasks} 
@@ -188,6 +205,14 @@ export default function EmployeeDetailPage() {
           </Stack>
         </Paper>
       </SimpleGrid>
+
+      <AddTaskModal
+        opened={opened}
+        onClose={close}
+        onSubmit={addTask}
+        employees={employeeOptions}
+        initialEmployeeId={employee.id.toString()}
+      />
     </Container>
   );
 }
