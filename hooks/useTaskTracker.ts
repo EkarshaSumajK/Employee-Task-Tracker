@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useLocalStorage } from '@mantine/hooks';
 import { Employee, TaskStatus } from '@/types';
 import { MOCK_DATA_CONSTANTS, TASK_STATUSES } from '@/constants';
@@ -102,7 +102,7 @@ export function useTaskTracker() {
 
   const [filter, setFilter] = useState<TaskStatus | 'All'>('All');
 
-  const addTask = (employeeId: number, title: string) => {
+  const addTask = useCallback((employeeId: number, title: string) => {
     setData((prev) => ({
       employees: prev.employees.map((emp) => {
         if (emp.id === employeeId) {
@@ -127,9 +127,9 @@ export function useTaskTracker() {
       color: 'teal',
       icon: React.createElement(Plus, { size: 16 }),
     });
-  };
+  }, [setData]);
 
-  const updateTaskStatus = (employeeId: number, taskId: number, newStatus: TaskStatus) => {
+  const updateTaskStatus = useCallback((employeeId: number, taskId: number, newStatus: TaskStatus) => {
     setData((prev) => ({
       employees: prev.employees.map((emp) => {
         if (emp.id === employeeId) {
@@ -152,9 +152,9 @@ export function useTaskTracker() {
       color: 'blue',
       icon: React.createElement(Check, { size: 16 }),
     });
-  };
+  }, [setData]);
 
-  const deleteTask = (employeeId: number, taskId: number) => {
+  const deleteTask = useCallback((employeeId: number, taskId: number) => {
     setData((prev) => ({
       employees: prev.employees.map((emp) => {
         if (emp.id === employeeId) {
@@ -172,23 +172,26 @@ export function useTaskTracker() {
       color: 'red',
       icon: React.createElement(Trash, { size: 16 }),
     });
-  };
+  }, [setData]);
 
-  const stats = {
-    total: 0,
-    completed: 0,
-    pending: 0,
-    inProgress: 0,
-  };
+  const stats = useMemo(() => {
+    const s = {
+      total: 0,
+      completed: 0,
+      pending: 0,
+      inProgress: 0,
+    };
 
-  data.employees.forEach(emp => {
-    emp.tasks.forEach(task => {
-      stats.total++;
-      if (task.status === 'Completed') stats.completed++;
-      if (task.status === 'Pending') stats.pending++;
-      if (task.status === 'In Progress') stats.inProgress++;
+    data.employees.forEach(emp => {
+      emp.tasks.forEach(task => {
+        s.total++;
+        if (task.status === 'Completed') s.completed++;
+        if (task.status === 'Pending') s.pending++;
+        if (task.status === 'In Progress') s.inProgress++;
+      });
     });
-  });
+    return s;
+  }, [data.employees]);
 
   return {
     employees: data.employees,
