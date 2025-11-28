@@ -4,6 +4,7 @@ import { Check, Clock, Loader, MoreHorizontal, Trash } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { getTaskStatusColor } from '@/utils/statusUtils';
 import { EmptyState } from '@/components/EmptyState';
+import { memo } from 'react';
 
 interface TaskListProps {
   tasks: Task[];
@@ -11,7 +12,7 @@ interface TaskListProps {
   onDeleteTask?: (taskId: number) => void;
 }
 
-export function TaskList({ tasks, onUpdateStatus, onDeleteTask }: TaskListProps) {
+export const TaskList = memo(function TaskList({ tasks, onUpdateStatus, onDeleteTask }: TaskListProps) {
   if (tasks.length === 0) {
     return (
       <EmptyState
@@ -101,5 +102,5 @@ export function TaskList({ tasks, onUpdateStatus, onDeleteTask }: TaskListProps)
       ))}
     </Stack>
   );
-}
+});
 

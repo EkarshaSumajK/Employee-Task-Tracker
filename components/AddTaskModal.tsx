@@ -32,7 +32,7 @@ export function AddTaskModal({ opened, onClose, onSubmit, employees, initialEmpl
     } else {
       form.setFieldValue('employeeId', '');
     }
-  }, [initialEmployeeId, opened, form]);
+  }, [initialEmployeeId, opened]);
 
   const handleSubmit = (values: typeof form.values) => {
     onSubmit(parseInt(values.employeeId), values.title);
