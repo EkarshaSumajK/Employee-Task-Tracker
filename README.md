@@ -290,15 +290,7 @@ npm start
 - `npm start` - Start production server
 - `npm run lint` - Run ESLint
 
-## 📄 License
 
-This project was developed as part of the ProU Intern Software Development coding assignment.
+https://github.com/user-attachments/assets/e85ddc4a-ae05-4d1a-a7b4-00fb11ff2977
 
-## 👨‍💻 Development Notes
 
-- Built with TypeScript for type safety
-- Component-based architecture for reusability
-- Custom hooks for logic separation
-- Utility functions for shared functionality
-- Constants file for easy configuration
-- Comprehensive error handling and user feedback
