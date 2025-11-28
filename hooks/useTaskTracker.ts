@@ -1,7 +1,8 @@
-import { useState, useCallback, useMemo } from 'react';
-import { useLocalStorage } from '@mantine/hooks';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { Employee, TaskStatus } from '@/types';
 import { MOCK_DATA_CONSTANTS, TASK_STATUSES } from '@/constants';
+
+// ... (keep generateMockData and INITIAL_DATA as is)
 
 const generateMockData = () => {
   const employees: Employee[] = [];
@@ -92,13 +93,29 @@ import { notifications } from '@mantine/notifications';
 import { Check, Trash, Plus } from 'lucide-react';
 import React from 'react';
 
-// ... (existing imports and mock data generation)
-
 export function useTaskTracker() {
-  const [data, setData] = useLocalStorage<{ employees: Employee[] }>({
-    key: 'employee-task-tracker-data-v6',
-    defaultValue: INITIAL_DATA as { employees: Employee[] },
-  });
+  const [data, setData] = useState<{ employees: Employee[] }>(INITIAL_DATA);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Load data from localStorage on mount
+  useEffect(() => {
+    const savedData = localStorage.getItem('employee-task-tracker-data-v6');
+    if (savedData) {
+      try {
+        setData(JSON.parse(savedData));
+      } catch (e) {
+        console.error('Failed to parse saved data', e);
+      }
+    }
+    setIsInitialized(true);
+  }, []);
+
+  // Save data to localStorage whenever it changes
+  useEffect(() => {
+    if (isInitialized) {
+      localStorage.setItem('employee-task-tracker-data-v6', JSON.stringify(data));
+    }
+  }, [data, isInitialized]);
 
   const [filter, setFilter] = useState<TaskStatus | 'All'>('All');
 

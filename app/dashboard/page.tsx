@@ -8,7 +8,7 @@ import { DashboardStats } from '@/components/DashboardStats';
 import { EmployeeList } from '@/components/EmployeeList';
 import { AddTaskModal } from '@/components/AddTaskModal';
 import { LoadingSkeleton } from '@/components/LoadingSkeleton';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Plus, TrendingUp, AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -129,7 +129,7 @@ export default function Dashboard() {
                     </Button>
                   </Group>
                   <EmployeeList 
-                    employees={employees
+                    employees={useMemo(() => employees
                       .map(e => ({
                         ...e,
                         completionRate: e.tasks.length > 0 
@@ -137,7 +137,7 @@ export default function Dashboard() {
                           : 0
                       }))
                       .sort((a, b) => b.completionRate - a.completionRate)
-                      .slice(0, 3)
+                      .slice(0, 3), [employees])
                     } 
                     onUpdateTaskStatus={updateTaskStatus}
                     onAddTask={handleAddTaskClick}
@@ -157,12 +157,12 @@ export default function Dashboard() {
                     </Group>
                   </Group>
                   <EmployeeList 
-                    employees={employees
+                    employees={useMemo(() => employees
                       .filter(e => {
                         const status = ['Active', 'At Risk', 'Behind', 'Completed'][e.id % 4];
                         return status === 'At Risk' || status === 'Behind';
                       })
-                      .slice(0, 3)
+                      .slice(0, 3), [employees])
                     } 
                     onUpdateTaskStatus={updateTaskStatus}
                     onAddTask={handleAddTaskClick}

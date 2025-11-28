@@ -101,7 +101,8 @@ Central hook for managing employee and task data:
 - Provides CRUD operations for tasks
 - Calculates aggregate statistics
 - Manages task status filtering
-- Persists data to localStorage
+- Persists data to localStorage using manual `useState`/`useEffect` for stability
+- Optimized with `useMemo` and `useCallback` to prevent unnecessary re-renders
 
 #### `useAuth`
 Authentication management:
@@ -224,8 +225,10 @@ npm start
 ### Local Storage
 - Data key: `employee-task-tracker-data-v6`
 - User session: `task-tracker-user`
+- Implemented with `useState` and `useEffect` for manual control
 - Automatically syncs on changes
 - Persists across browser sessions
+- Handles hydration mismatches gracefully
 
 ## 🔧 Configuration
 
@@ -258,6 +261,12 @@ npm start
 - Breakpoints: base, sm, md, lg
 - Fluid spacing and typography
 - Adaptive grid layouts
+
+### Performance & Optimization
+- **Memoization**: Heavy calculations (stats, filtered lists) are memoized using `useMemo`
+- **Stable Callbacks**: Action functions are wrapped in `useCallback` to prevent child re-renders
+- **Hydration Handling**: Sidebar and other components handle SSR/CSR hydration mismatches correctly
+- **Dynamic Imports**: Used where appropriate to reduce initial bundle size
 
 ## 🐛 Error Handling
 
