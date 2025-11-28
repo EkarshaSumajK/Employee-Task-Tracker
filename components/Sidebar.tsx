@@ -73,11 +73,7 @@ export function Sidebar({ onLinkClick }: SidebarProps) {
     );
   });
 
-  if (!mounted) {
-    return null; // Or a loading skeleton to prevent mismatch entirely, but might cause flash. 
-    // Actually, returning null might be too aggressive. 
-    // Let's just use the `isDark` flag which defaults to false (light) on server.
-  }
+
 
   return (
     <Box style={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: 'var(--mantine-color-body)' }}>
