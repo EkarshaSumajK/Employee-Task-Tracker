@@ -1,6 +1,6 @@
-import { Badge, Group, Text, Menu, Stack, Box, ActionIcon, Paper, ThemeIcon } from '@mantine/core';
+import { Badge, Group, Text, Menu, Stack, Box, ActionIcon, Paper } from '@mantine/core';
 import { Task, TaskStatus } from '@/types';
-import { Check, Clock, Loader, MoreHorizontal, AlertCircle, Trash } from 'lucide-react';
+import { Check, Clock, Loader, MoreHorizontal, Trash } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { getTaskStatusColor } from '@/utils/statusUtils';
 import { EmptyState } from '@/components/EmptyState';

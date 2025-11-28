@@ -7,7 +7,6 @@ import { Search, Filter, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { AddTaskModal } from '@/components/AddTaskModal';
 import { useDisclosure } from '@mantine/hooks';
-import { TaskStatus } from '@/types';
 import { DEPARTMENTS } from '@/constants';
 import { EmptyState } from '@/components/EmptyState';
 

@@ -61,7 +61,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   Oops! Something went wrong
                 </Title>
                 <Text c="dimmed" size="lg" mb="xl">
-                  We encountered an unexpected error. Don't worry, your data is safe.
+                  We encountered an unexpected error. Don&apos;t worry, your data is safe.
                 </Text>
                 
                 {this.state.error && (

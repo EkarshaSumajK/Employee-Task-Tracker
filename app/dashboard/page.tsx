@@ -1,6 +1,6 @@
 'use client';
 
-import { Container, Title, Group, Button, Stack, Text, Box, Paper, SimpleGrid, ThemeIcon } from '@mantine/core';
+import { Container, Title, Group, Button, Stack, Text, Box, Paper, ThemeIcon } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useTaskTracker } from '@/hooks/useTaskTracker';
 import { useAuth } from '@/hooks/useAuth';
@@ -9,13 +9,13 @@ import { EmployeeList } from '@/components/EmployeeList';
 import { AddTaskModal } from '@/components/AddTaskModal';
 import { LoadingSkeleton } from '@/components/LoadingSkeleton';
 import { useState, useEffect } from 'react';
-import { Plus, TrendingUp, Users, AlertCircle } from 'lucide-react';
+import { Plus, TrendingUp, AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 export default function Dashboard() {
-  const { employees, addTask, updateTaskStatus, deleteTask, filter, setFilter, stats } = useTaskTracker();
+  const { employees, addTask, updateTaskStatus, stats } = useTaskTracker();
   const { user } = useAuth();
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
@@ -88,7 +88,7 @@ export default function Dashboard() {
                   Dashboard Overview
                 </Title>
                 <Text c="dimmed" mt={4} size="sm">
-                  Welcome back, {user}. Here's what's happening today.
+                  Welcome back, {user}. Here&apos;s what&apos;s happening today.
                 </Text>
               </Box>
               <Button 

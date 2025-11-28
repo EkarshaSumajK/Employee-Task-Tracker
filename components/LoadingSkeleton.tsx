@@ -1,4 +1,4 @@
-import { Skeleton, Stack, SimpleGrid, Card, Group, Box } from '@mantine/core';
+import { Skeleton, Stack, SimpleGrid, Card, Group } from '@mantine/core';
 
 interface LoadingSkeletonProps {
   type?: 'dashboard' | 'employee-list' | 'employee-card' | 'task-list' | 'stats';
